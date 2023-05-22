@@ -4,35 +4,52 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <title>document</title>
+    <title>Form Validation</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        .error {
+            border: 1px solid red;
+        }
+    </style>
 </head>
 <body>
+    <h1>Form Validation</h1>
     <form id="myForm">
-        <input type="text" id="inputnama" placeholder="Nama" required>
-        <input type="email" id="inputemail" placeholder="Email" required>
-        <button type="submit" id="submitButton" disabled>Submit</button>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name">
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email">
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message"></textarea>
+
+        <input type="submit" value="Submit">
     </form>
 
     <script>
         $(document).ready(function() {
-           
-            var inputnama = $("#inputnama");
-            var inputemail = $("#inputemail");
-            var submitButton = $("#submitButton");
+            $('#myForm').submit(function(e) {
+                e.preventDefault(); // Prevent form submission
 
-           
-            function checkForm() {
-                if (inputnama.val() !== "" && inputemail.val() !== "") {
-                    submitButton.prop("disabled", false); 
-                } else {
-                    submitButton.prop("disabled", true); 
+                var isValid = true;
+
+                // Reset error styles
+                $('input, textarea').removeClass('error');
+
+                // Check if any input is empty 
+                $('input, textarea').each(function() {
+                    if ($(this).val().trim() === '') {
+                        isValid = false;
+                        $(this).addClass('error');
+                    }
+                });
+
+                // Submit the form if all inputs are filled
+                if (isValid) {
+                    this.submit();
                 }
-            }
-
-            
-            inputnama.on("input", checkForm);
-            inputemail.on("input", checkForm);
+            });
         });
     </script>
 </body>
